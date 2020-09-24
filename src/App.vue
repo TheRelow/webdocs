@@ -1,32 +1,39 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+	<div id="app" class="page">
+		<popup/>
+		<sides/>
+		<mainLayer/>
+	</div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+@import "~materialize-css/sass/materialize.scss";
+@import "@/assets/styles.sass";
 
 #nav {
-  padding: 30px;
+	a {
+		font-weight: bold;
+		color: #2c3e50;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+	&.router-link-exact-active {
+		color: #42b983;
+	}
+	}
 }
 </style>
+
+<script>
+// @ is an alias to /src
+import Popup from '@/components/popup.vue'
+import Sides from '@/components/sides.vue'
+import mainLayer from '@/components/main-layer.vue'
+
+export default {
+	name: 'Home',
+	components: {
+		Popup,
+		Sides,
+    mainLayer
+	}
+}
+</script>
