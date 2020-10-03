@@ -1,8 +1,8 @@
 <template>
 	<div id="app" class="page">
-		<popup/>
-		<sides/>
-		<mainLayer/>
+		<component :is="layout">
+
+    </component>
 	</div>
 </template>
 
@@ -24,16 +24,20 @@
 
 <script>
 // @ is an alias to /src
-import Popup from '@/components/popup.vue'
-import Sides from '@/components/sides.vue'
-import mainLayer from '@/components/main-layer.vue'
+import mainLayout from '@/layouts/mainLayout'
+import emptyLayout from '@/layouts/emptyLayout'
+
 
 export default {
 	name: 'Home',
-	components: {
-		Popup,
-		Sides,
-    mainLayer
-	}
+  computed: {
+    layout() {
+      return (this.$route.meta.layout || 'empty') + '-layout'
+    }
+  },
+  components: {
+    emptyLayout,
+    mainLayout
+  }
 }
 </script>
