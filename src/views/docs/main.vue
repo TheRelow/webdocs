@@ -12,6 +12,7 @@
     <div class="row" v-else>
       <docs-card v-for="(item, index) in docs" :key="item.name" :value="{item, index}"/>
     </div>
+    <a href="javascript:;" @click="logStateDocs">Вывести в консоль стейт доков</a>
 	</div>
 </template>
 
@@ -25,6 +26,11 @@ export default {
     loading: true,
     deleted: false
   }),
+  methods: {
+    logStateDocs() {
+      console.log(this.docs)
+    }
+  },
   computed: {
     docs() {
       return this.$store.getters.docs
@@ -33,7 +39,6 @@ export default {
   async created() {
     if ( !Object.keys(this.$store.getters.docs).length ) {
       await this.$store.dispatch('fetchDocs')
-      console.info('Docs loaded')
     }
     this.loading = false
   }

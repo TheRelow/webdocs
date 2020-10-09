@@ -50,21 +50,9 @@ const routes = [
 				meta: { layout: 'main' }
 			},
 			{
-				path: 'js',
-				name: 'js',
-				component: () => import(/* webpackChunkName: "docs-js" */ '../views/docs/js.vue'),
-				meta: { layout: 'main' }
-			},
-			{
-				path: 'php',
-				name: 'php',
-				component: () => import(/* webpackChunkName: "docs-php" */ '../views/docs/php.vue'),
-				meta: { layout: 'main' }
-			},
-			{
-				path: 'vue',
-				name: 'vue',
-				component: () => import(/* webpackChunkName: "docs-vue" */ '../views/docs/vue.vue'),
+				path: ':id',
+				name: 'detailDoc',
+				component: () => import(/* webpackChunkName: "docs-detail" */ '../views/docs/detail.vue'),
 				meta: { layout: 'main' }
 			}
 		]

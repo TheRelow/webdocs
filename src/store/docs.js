@@ -3,43 +3,52 @@ import firebase from "firebase";
 export default {
     state: {
         docs: {},
+        docsDetail: {}
     },
     mutations: {
-        setDocs(state, info) {
-            state.docs = info
+        setDocs(state, docs) {
+            state.docs = docs
         },
-        newDoc(state, info) {
-            console.log(info)
+        setDocDetail(state, docs) {
+            state.docsDetail[docs.id] = docs.content
+        },
+        setNewDoc(state, doc) {
+            state.docs[doc.id] = {name: doc.name, preview: doc.preview}
+        },
+        deleteDoc(state, docKey) {
+            delete state.docs[docKey]
         }
     },
     actions: {
-        // eslint-disable-next-line no-unused-vars
-        async fetchDocs({dispatch, commit}) {
+        async fetchDocs({commit}) {
             const docs = (await firebase.database().ref(`/docs`).once('value')).val()
-            const myDocs = []
-            for (let doc in docs) {
-                myDocs.push(Object.assign({id: doc}, docs[doc]))
-            }
             commit('setDocs', docs)
         },
-        // eslint-disable-next-line no-empty-pattern
-        async setNewDoc({}, {name, preview}) {
+        async getDocDetail({commit}, docKey) {
+            const content = (await firebase.database().ref(`/docs-detail/${docKey}`).once('value')).val()
+            commit('setDocDetail', {id: docKey, content})
+        },
+        async editDocDetail({commit}, {docKey, content}) {
+            await firebase.database().ref(`/docs-detail/${docKey}`).set({content})
+            commit('setDocDetail', {id: docKey, content})
+        },
+        async setNewDoc({commit}, {name, preview}) {
             try {
-                console.log(name)
-                console.log(preview)
-                await firebase.database().ref(`/docs/${name}`).set({
-                    name,
-                    preview
-                })
+                const newDocKey = firebase.database().ref(`/docs`).push().key
+                await firebase.database().ref(`/docs/${newDocKey}`).set({name,preview})
+                await firebase.database().ref(`/docs-detail/${newDocKey}`).set({content: 'content'})
+                commit('setNewDoc', {id: newDocKey, name, preview})
             } catch (e) {
                 console.log(e)
                 throw e
             }
         },
-        // eslint-disable-next-line no-empty-pattern
-        async deleteDoc({}, {name}) {
+        async deleteDoc({commit}, docKey) {
+            console.log(docKey)
             try {
-                await firebase.database().ref(`/docs/${name}`).remove()
+                await firebase.database().ref(`/docs/${docKey}`).remove()
+                await firebase.database().ref(`/docs-detail/${docKey}`).remove()
+                commit('deleteDoc', docKey)
             } catch (e) {
                 console.log(e);
                 throw e
@@ -47,6 +56,7 @@ export default {
         }
     },
     getters: {
-        docs: s => s.docs
+        docs: s => s.docs,
+        docsDetail: s => s.docsDetail
     }
 }

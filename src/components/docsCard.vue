@@ -43,9 +43,7 @@ export default {
       this.$refs.card.classList.remove('editing')
     },
     async deleteDoc() {
-      const p = {
-        name: this.value.index
-      }
+      const p = this.value.index
       try {
         await this.$store.dispatch('deleteDoc', p)
         this.deleted = true

@@ -91,7 +91,10 @@ export default {
       try {
         await this.$store.dispatch('setNewDoc', formData)
         this.$message('Раздел успешно создан')
-        this.$store.commit('newDoc', formData)
+        // this.name = ''
+        // this.preview = ''
+        // this.$v.reset()
+        await this.$router.push('/docs')
       } catch (e) {
         console.log(e)
         this.$errorMsg(e.code)

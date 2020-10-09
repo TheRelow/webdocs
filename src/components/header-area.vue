@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import M from 'materialize-css/dist/js/materialize.min.js'
+// import M from 'materialize-css/dist/js/materialize.min.js'
 
 export default {
   name: 'HeaderArea',
